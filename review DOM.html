@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review DOM</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="d-flex flex-column align-items-center">
+        <div id="data" class="d-flex flex-column align-items-center w-100">
+            <h1 class="m-5">TABLE DATA SISWA</h1>
+            <hr>
+            <table class="table table-striped table-bordered w-75">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Jenis Kelamin</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Rifqi</td>
+                        <td>Laki-laki</td>
+                        <td>
+                            <button onclick="editData()" type="button" class="btn btn-primary">Edit</button>
+                            <button type="button" class="btn btn-danger">Hapus</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Annisa</td>
+                        <td>Perempuan</td>
+                        <td>
+                            <button onclick="editData()" type="button" class="btn btn-primary">Edit</button>
+                            <button type="button" class="btn btn-danger">Hapus</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Ananda</td>
+                        <td>Laki-laki</td>
+                        <td>
+                            <button onclick="editData()" type="button" class="btn btn-primary">Edit</button>
+                            <button type="button" class="btn btn-danger">Hapus</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="data-form">
+            <h1 class="my-5">Edit Data</h1>
+            <input type="text" value="" id="id-field" style="display: none;">
+            <form class="w-50 border p-5" onsubmit="submitData(event)">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Nama</label>
+                    <input type="text" class="form-control" id="input-nama" aria-describedby="emailHelp"
+                        placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Jenis Kelamin</label>
+                    <select id="input-gender" class="form-control">
+                        <option id="male">Laki-laki</option>
+                        <option id="female">Perempuan</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div>
+            <button id="add-button" onclick="addingData()" type="button" class="btn btn-success my-5">Tambahkan</button>
+        </div>
+        <div id="add-form" class="d-flex flex-column align-items-center w-100">
+            <h1 class="my-5">Add Data</h1>
+            <input type="text" value="" id="id-field1" style="display: none;">
+            <form class="w-50 border p-5" onsubmit="submitData1(event)">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Nama</label>
+                    <input type="text" class="form-control" id="add-nama" aria-describedby="emailHelp"
+                        placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Jenis Kelamin</label>
+                    <select id="add-gender" class="form-control">
+                        <option id="male">Laki-laki</option>
+                        <option id="female">Perempuan</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        let editForm = document.getElementById('data-form');
+        let data = document.getElementById('data');
+        let addData = document.getElementById('add-form');
+        let button = document.getElementById('add-button');
+        let table = document.getElementById('table-body');
+        let male = document.getElementById('male');
+        let female = document.getElementById('female');
+        let dummyData = [
+            {
+                id: 1,
+                Nama: 'eqi',
+                Kelamin: 'Laki-laki'
+            },
+            {
+                id: 2,
+                Nama: 'ica',
+                Kelamin: 'Perempuan'
+            },
+            {
+                id: 3,
+                Nama: 'dayat',
+                Kelamin: 'Laki-laki'
+            },
+            {
+                id: 4,
+                Nama: 'nur',
+                Kelamin: 'Perempuan'
+            },
+            {
+                id: 5,
+                Nama: 'kinan',
+                Kelamin: 'Laki-laki'
+            },
+        ]
+
+        function render() {
+            editForm.className = '';
+            editForm.style.display = 'none';
+            data.className = 'd-flex flex-column align-items-center w-100';
+            addData.className = '';
+            addData.style.display = 'none';
+            button.className = 'd-flex btn btn-success my-5';
+            console.log(button);
+            let htmlStr = '';
+            for (i = 0; i < dummyData.length; i++) {
+                htmlStr += `
+                <tr>
+                        <th scope="row">${dummyData[i].id}</th>
+                        <td>${dummyData[i].Nama}</td>
+                        <td>${dummyData[i].Kelamin}</td>
+                        <td>
+                            <button onclick="editData(${dummyData[i].id})" type="button" class="btn btn-primary">Edit</button>
+                            <button onclick="deleteData(${dummyData[i].id})" type="button" class="btn btn-danger">Hapus</button>
+                        </td>
+                    </tr>
+                `
+            }
+            table.innerHTML = htmlStr;
+        }
+        render()
+
+        function editData(id) {
+            editForm.className = 'd-flex flex-column align-items-center w-100';
+            data.className = '';
+            data.style.display = 'none';
+            addData.className = '';
+            addData.style.display = 'none';
+            button.className = '';
+            button.style.display = 'none';
+            for (i = 0; i < dummyData.length; i++) {
+                if (dummyData[i].id == id) {
+                    document.getElementById('input-nama').value = dummyData[i].Nama;
+                    if (male.value == dummyData[i].Kelamin) {
+                        male.selected = 'true'
+                    }
+                    if (female.value == dummyData[i].Kelamin) {
+                        female.selected = 'true'
+                    }
+                    document.getElementById('id-field').value = dummyData[i].id;
+                    break;
+                }
+            }
+        }
+        render()
+        function submitData(e) {
+            e.preventDefault();
+            let nama = document.getElementById('input-nama').value;
+            let gender = document.getElementById('input-gender');
+            let index = gender.selectedIndex
+            gender = gender.options[index].value
+            console.log(index)
+            let id = document.getElementById('id-field').value;
+            for (i = 0; i < dummyData.length; i++) {
+                if (dummyData[i].id == id) {
+                    dummyData[i].Nama = nama
+                    dummyData[i].Kelamin = gender
+                }
+            }
+            render();
+        }
+        function deleteData(id) {
+            for (i = 0; i < dummyData.length; i++) {
+                if (dummyData[i].id == id) {
+                    dummyData.splice(i, 1);
+                    break;
+                }
+            }
+            render()
+        }
+        function addingData() {
+            editForm.className = '';
+            editForm.style.display = 'none';
+            data.className = '';
+            data.style.display = 'none';
+            addData.className = 'd-flex flex-column align-items-center w-100';
+            button.className = '';
+            button.style.display = 'none';
+           
+        }
+        render()
+        function submitData1(e) {
+            e.preventDefault();
+            let gender = document.getElementById('add-gender');
+
+            let index = gender.selectedIndex
+            gender = gender.options[index].value
+            
+            let id = document.getElementById('id-field1').value;
+            dummyData.push(
+                {
+                    id: dummyData.length + 1,
+                    Nama: document.getElementById('add-nama').value,
+                    Kelamin: document.getElementById('add-gender').value,
+                }
+            )
+            render()
+        }
+        
+    </script>
+</body>
+
+</html>
